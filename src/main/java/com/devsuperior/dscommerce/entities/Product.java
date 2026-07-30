@@ -2,10 +2,7 @@ package com.devsuperior.dscommerce.entities;
 
 import jakarta.persistence.*;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name = "tb_product")
@@ -91,5 +88,17 @@ public class Product {
 
     public List<Order> getOrders() {
         return items.stream().map(OrderItem::getOrder).toList();
+    }
+
+    @Override
+    public final boolean equals(Object o) {
+        if (!(o instanceof Product product)) return false;
+
+        return Objects.equals(getId(), product.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(getId());
     }
 }

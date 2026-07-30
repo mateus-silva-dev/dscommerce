@@ -84,4 +84,16 @@ public class Order {
     public List<Product> getProducts() {
         return items.stream().map(OrderItem::getProduct).toList();
     }
+
+    @Override
+    public final boolean equals(Object o) {
+        if (!(o instanceof Order order)) return false;
+
+        return Objects.equals(getId(), order.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(getId());
+    }
 }

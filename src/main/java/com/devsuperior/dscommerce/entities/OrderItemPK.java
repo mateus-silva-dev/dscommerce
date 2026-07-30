@@ -2,6 +2,8 @@ package com.devsuperior.dscommerce.entities;
 
 import jakarta.persistence.*;
 
+import java.util.Objects;
+
 @Embeddable
 public class OrderItemPK {
 
@@ -34,5 +36,19 @@ public class OrderItemPK {
 
     public void setProduct(Product product) {
         this.product = product;
+    }
+
+    @Override
+    public final boolean equals(Object o) {
+        if (!(o instanceof OrderItemPK that)) return false;
+
+        return Objects.equals(getOrder(), that.getOrder()) && Objects.equals(getProduct(), that.getProduct());
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Objects.hashCode(getOrder());
+        result = 31 * result + Objects.hashCode(getProduct());
+        return result;
     }
 }
