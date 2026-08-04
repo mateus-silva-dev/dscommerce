@@ -36,6 +36,7 @@ public class Product {
     @OneToMany(mappedBy = "id.product")
     private Set<OrderItem> items = new HashSet<>();
 
+
     private Product(String name, String description, Double price, String imgUrl) {
         this.name = name;
         this.description = description;
@@ -47,25 +48,14 @@ public class Product {
         return new Product(name, description, price, imgUrl);
     }
 
-    public void setId(Long id) {
-        this.id = id;
+
+    public void updateData(String name, String description, Double price, String imgUrl) {
+        if (name != null && !name.isBlank()) this.name = name;
+        if (description != null && !description.isBlank()) this.description = description;
+        if (price != null && price > 0) this.price = price;
+        if (imgUrl != null && !imgUrl.isBlank()) this.imgUrl = imgUrl;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public void setPrice(Double price) {
-        this.price = price;
-    }
-
-    public void setImgUrl(String imgUrl) {
-        this.imgUrl = imgUrl;
-    }
 
     public List<Order> getOrders() {
         return items.stream().map(OrderItem::getOrder).toList();
