@@ -43,4 +43,9 @@ public class ProductService {
         product.updateData(dto.name(), dto.description(), dto.price(), dto.imgUrl());
         return ProductMapper.toDTO(product);
     }
+
+    @Transactional
+    public void delete(Long id) {
+        repository.deleteById(id);
+    }
 }
