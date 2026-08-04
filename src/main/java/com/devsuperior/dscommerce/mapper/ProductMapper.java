@@ -8,10 +8,10 @@ public class ProductMapper {
 
     private static final ModelMapper MAPPER = new ModelMapper();
     static {
-        MAPPER.createTypeMap(Product.class, ProductDTO.Response.class)
+        MAPPER.createTypeMap(Product.class, ProductDTO.class)
                 .setConverter(context -> {
                     Product source = context.getSource();
-                    return new ProductDTO.Response(
+                    return new ProductDTO(
                             source.getId(),
                             source.getName(),
                             source.getDescription(),
@@ -23,11 +23,11 @@ public class ProductMapper {
 
     private ProductMapper() { }
 
-    public static ProductDTO.Response toDTO(Product entity) {
-        return MAPPER.map(entity, ProductDTO.Response.class);
+    public static ProductDTO toDTO(Product entity) {
+        return MAPPER.map(entity, ProductDTO.class);
     }
 
-    public static Product toEntity(ProductDTO.Response dto) {
+    public static Product toEntity(ProductDTO dto) {
         return Product.of(dto.name(), dto.description(), dto.price(), dto.imgUrl());
     }
 }
