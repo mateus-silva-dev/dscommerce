@@ -1,14 +1,17 @@
 package com.devsuperior.dscommerce.entities;
 
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.*;
 
 @Entity
 @Table(name = "tb_product")
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Product {
 
@@ -33,14 +36,15 @@ public class Product {
     @OneToMany(mappedBy = "id.product")
     private Set<OrderItem> items = new HashSet<>();
 
-    public Product() { }
-
-    public Product(Long id, String name, String description, Double price, String imgUrl) {
-        this.id = id;
+    private Product(String name, String description, Double price, String imgUrl) {
         this.name = name;
         this.description = description;
         this.price = price;
         this.imgUrl = imgUrl;
+    }
+
+    public static Product of(String name, String description, Double price, String imgUrl) {
+        return new Product(name, description, price, imgUrl);
     }
 
     public void setId(Long id) {

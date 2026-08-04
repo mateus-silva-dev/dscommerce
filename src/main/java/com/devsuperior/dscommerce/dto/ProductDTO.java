@@ -1,21 +1,7 @@
 package com.devsuperior.dscommerce.dto;
 
-import com.devsuperior.dscommerce.entities.Product;
+public class ProductDTO {
 
-public record ProductDTO(
-        Long id,
-        String name,
-        String description,
-        Double price,
-        String imgUrl) {
-
-    public ProductDTO (Product entity) {
-        this(
-                entity.getId(),
-                entity.getName(),
-                entity.getDescription(),
-                entity.getPrice(),
-                entity.getImgUrl());
-    }
+    public record Response(Long id, String name, String description, Double price, String imgUrl) { }
 }
 
