@@ -6,6 +6,7 @@ import com.devsuperior.dscommerce.services.exceptions.ResourceNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.util.HtmlUtils;
@@ -29,6 +30,14 @@ public class ControllerExceptionHandler {
         return ResponseEntity
                 .status(status)
                 .body(CustomError.of(status.value(), e.getMessage(), path));
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<CustomError> argumentNotValidation(MethodArgumentNotValidException e, HttpServletRequest request) {
+        String path = HtmlUtils.htmlEscape(request.getRequestURI());
+        return ResponseEntity
+                .unprocessableEntity()
+                .body(CustomError.validation("Dados inválidos", path, e.getBindingResult()));
     }
 
 }
