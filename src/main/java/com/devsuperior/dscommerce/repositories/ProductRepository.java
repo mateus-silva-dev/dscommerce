@@ -8,7 +8,8 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
-    @Query("SELECT obj FROM Product obj " +
-                    "WHERE UPPER(obj.name) LIKE UPPER(CONCAT('%', :name, '%'))")
+    @Query(value = "SELECT obj FROM Product obj JOIN FETCH obj.categories " +
+                    "WHERE UPPER(obj.name) LIKE UPPER(CONCAT('%', :name, '%'))",
+            countQuery = "SELECT COUNT(obj) FROM Product obj JOIN obj.categories")
     Page<Product> searchByName(String name, Pageable pageable);
 }
