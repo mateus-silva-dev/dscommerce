@@ -3,17 +3,23 @@ package com.devsuperior.dscommerce.entities;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Objects;
 
 @Entity
 @Table(name = "tb_order_item")
+@Getter
 public class OrderItem {
 
     @EmbeddedId
     private OrderItemPK id = new OrderItemPK();
 
+    @Setter
     private Integer quantity;
+
+    @Setter
     private Double price;
 
     public OrderItem() { }
@@ -39,22 +45,6 @@ public class OrderItem {
 
     public void setProduct(Product product) {
         id.setProduct(product);
-    }
-
-    public Integer getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(Integer quantity) {
-        this.quantity = quantity;
-    }
-
-    public Double getPrice() {
-        return price;
-    }
-
-    public void setPrice(Double price) {
-        this.price = price;
     }
 
     @Override

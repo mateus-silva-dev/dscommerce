@@ -28,6 +28,6 @@ public class ProductMapper {
     }
 
     public static Product toEntity(ProductDTO dto) {
-        return Product.of(dto.name(), dto.description(), dto.price(), dto.imgUrl());
+        return new Product(dto.name(), dto.description(), dto.price(), dto.imgUrl());
     }
 }

@@ -1,40 +1,29 @@
 package com.devsuperior.dscommerce.entities;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Objects;
 
 @Embeddable
+@Getter
 public class OrderItemPK {
 
     @ManyToOne
     @JoinColumn(name = "order_id")
+    @Setter
     private Order order;
 
     @ManyToOne
     @JoinColumn(name = "product_id")
+    @Setter
     private Product product;
 
     public OrderItemPK() { }
 
     public OrderItemPK(Order order, Product product) {
         this.order = order;
-        this.product = product;
-    }
-
-    public Order getOrder() {
-        return order;
-    }
-
-    public void setOrder(Order order) {
-        this.order = order;
-    }
-
-    public Product getProduct() {
-        return product;
-    }
-
-    public void setProduct(Product product) {
         this.product = product;
     }
 
