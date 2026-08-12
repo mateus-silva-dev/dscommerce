@@ -2,8 +2,17 @@ spring:
   application:
     name: dscommerce
 
-  profiles:
-    active: test
-
   jpa:
     open-in-view: false
+
+  profiles:
+    active: ${APP_PROFILE:test}
+
+security:
+  client-id: ${CLIENT_ID:dscommerceid}
+  client-secret: ${CLIENT_SECRET:dscommercesecret}
+  jwt:
+    duration: ${JWT_DURATION:86400}
+
+cors:
+  origins: ${CORS_ORIGINS:http://localhost:3000,http://localhost:5173}
