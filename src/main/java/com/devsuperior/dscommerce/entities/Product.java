@@ -8,7 +8,6 @@ import java.util.*;
 @Entity
 @Table(name = "tb_product")
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Product {
 
     @Id
@@ -40,6 +39,7 @@ public class Product {
     @Setter(AccessLevel.NONE)
     private Set<OrderItem> items = new HashSet<>();
 
+    public Product() { }
 
     public Product(String name, String description, Double price, String imgUrl) {
         this.name = name;
@@ -48,11 +48,15 @@ public class Product {
         this.imgUrl = imgUrl;
     }
 
-    public void updateData(String name, String description, Double price, String imgUrl) {
+    public void updateData(String name, String description, Double price, String imgUrl, Set<Category> category) {
         if (name != null && !name.isBlank()) this.name = name;
         if (description != null && !description.isBlank()) this.description = description;
         if (price != null && price > 0) this.price = price;
         if (imgUrl != null && !imgUrl.isBlank()) this.imgUrl = imgUrl;
+        categories.clear();
+        if (category != null) {
+            categories.addAll(category);
+        }
     }
 
     @Override

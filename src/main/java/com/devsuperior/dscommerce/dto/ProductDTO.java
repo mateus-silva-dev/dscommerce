@@ -2,6 +2,8 @@ package com.devsuperior.dscommerce.dto;
 
 import jakarta.validation.constraints.*;
 
+import java.util.List;
+
 public record ProductDTO(
             Long id,
 
@@ -17,5 +19,12 @@ public record ProductDTO(
             Double price,
 
             @NotBlank(message = "Campo requerido")
-            String imgUrl
-) { }
+            String imgUrl,
+
+            @NotEmpty(message = "Informe ao menos uma categoria")
+            List<CategoryDTO> categories
+) {
+    public ProductDTO {
+        categories = (categories != null) ? List.copyOf(categories) : List.of();
+    }
+}

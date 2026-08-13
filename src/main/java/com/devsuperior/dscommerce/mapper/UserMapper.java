@@ -22,9 +22,7 @@ public interface UserMapper {
     }
 
     default String mapRoleToString(Role role) {
-        if (role == null) {
-            return null;
-        }
+        if (role == null) return null;
         return role.getAuthority();
     }
 
