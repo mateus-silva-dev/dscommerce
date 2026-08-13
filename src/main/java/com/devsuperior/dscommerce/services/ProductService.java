@@ -18,36 +18,38 @@ import org.springframework.transaction.annotation.Transactional;
 public class ProductService {
 
     private final ProductRepository repository;
+    private final ProductMapper mapper;
 
-    public ProductService(ProductRepository repository) {
+    public ProductService(ProductRepository repository, ProductMapper mapper) {
         this.repository = repository;
+        this.mapper = mapper;
     }
 
     @Transactional(readOnly = true)
     public ProductDTO findById(Long id) {
         Product product = findByIdOrThrow(id);
-        return ProductMapper.toDTO(product);
+        return mapper.toDTO(product);
     }
 
     @Transactional(readOnly = true)
     public Page<ProductDTO> findAll(String name, Pageable pageable) {
         return repository
                 .searchByName(name, pageable)
-                .map(ProductMapper::toDTO);
+                .map(mapper::toDTO);
     }
 
     @Transactional
     public ProductDTO insert(ProductDTO dto) {
-        Product product = ProductMapper.toEntity(dto);
+        Product product = mapper.toEntity(dto);
         product = repository.save(product);
-        return ProductMapper.toDTO(product);
+        return mapper.toDTO(product);
     }
 
     @Transactional
     public ProductDTO update(Long id, ProductDTO dto) {
         Product product = findByIdOrThrow(id);
         product.updateData(dto.name(), dto.description(), dto.price(), dto.imgUrl());
-        return ProductMapper.toDTO(product);
+        return mapper.toDTO(product);
     }
 
     @Transactional(propagation = Propagation.SUPPORTS)

@@ -2,32 +2,14 @@ package com.devsuperior.dscommerce.mapper;
 
 import com.devsuperior.dscommerce.dto.ProductDTO;
 import com.devsuperior.dscommerce.entities.Product;
-import org.modelmapper.ModelMapper;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
-public class ProductMapper {
+@Mapper(componentModel = "spring")
+public interface ProductMapper {
 
-    private static final ModelMapper MAPPER = new ModelMapper();
-    static {
-        MAPPER.createTypeMap(Product.class, ProductDTO.class)
-                .setConverter(context -> {
-                    Product source = context.getSource();
-                    return new ProductDTO(
-                            source.getId(),
-                            source.getName(),
-                            source.getDescription(),
-                            source.getPrice(),
-                            source.getImgUrl()
-                    );
-                });
-    }
+    ProductDTO toDTO(Product product);
 
-    private ProductMapper() { }
-
-    public static ProductDTO toDTO(Product entity) {
-        return MAPPER.map(entity, ProductDTO.class);
-    }
-
-    public static Product toEntity(ProductDTO dto) {
-        return new Product(dto.name(), dto.description(), dto.price(), dto.imgUrl());
-    }
+    @Mapping(target = "id", ignore = true)
+    Product toEntity(ProductDTO dto);
 }
