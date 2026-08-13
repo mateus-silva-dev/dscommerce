@@ -1,6 +1,7 @@
 package com.devsuperior.dscommerce.services;
 
 import com.devsuperior.dscommerce.dto.ProductDTO;
+import com.devsuperior.dscommerce.dto.ProductMinDTO;
 import com.devsuperior.dscommerce.entities.Product;
 import com.devsuperior.dscommerce.mapper.ProductMapper;
 import com.devsuperior.dscommerce.repositories.ProductRepository;
@@ -32,10 +33,10 @@ public class ProductService {
     }
 
     @Transactional(readOnly = true)
-    public Page<ProductDTO> findAll(String name, Pageable pageable) {
+    public Page<ProductMinDTO> findAll(String name, Pageable pageable) {
         return repository
                 .searchByName(name, pageable)
-                .map(mapper::toDTO);
+                .map(mapper::toMinDTO);
     }
 
     @Transactional
