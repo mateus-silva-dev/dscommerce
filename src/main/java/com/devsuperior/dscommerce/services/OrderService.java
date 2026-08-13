@@ -1,27 +1,58 @@
 package com.devsuperior.dscommerce.services;
 
 import com.devsuperior.dscommerce.dto.OrderDTO;
-import com.devsuperior.dscommerce.entities.Order;
+import com.devsuperior.dscommerce.dto.OrderItemDTO;
+import com.devsuperior.dscommerce.entities.*;
 import com.devsuperior.dscommerce.mapper.OrderMapper;
+import com.devsuperior.dscommerce.repositories.OrderItemRepository;
 import com.devsuperior.dscommerce.repositories.OrderRepository;
+import com.devsuperior.dscommerce.repositories.ProductRepository;
 import com.devsuperior.dscommerce.services.exceptions.ResourceNotFoundException;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.Instant;
 
 @Service
 public class OrderService {
 
     private final OrderRepository repository;
-    private final OrderMapper mapper;
+    private final OrderItemRepository orderItemRepository;
+    private final UserService userService;
+    private final ProductRepository productRepository;
 
-    public OrderService(OrderRepository repository, OrderMapper mapper) {
+    public OrderService(OrderRepository repository, OrderItemRepository orderItemRepository, UserService userService, ProductRepository productRepository) {
         this.repository = repository;
-        this.mapper = mapper;
+        this.orderItemRepository = orderItemRepository;
+        this.userService = userService;
+        this.productRepository = productRepository;
     }
 
     @Transactional(readOnly = true)
     public OrderDTO findById(Long id) {
         Order order = repository.findById(id).orElseThrow(ResourceNotFoundException::new);
+        return new OrderDTO(order);
+    }
+
+    @Transactional
+    public OrderDTO insert(OrderDTO dto) {
+        Order order = new Order();
+        order.setMoment(Instant.now());
+        order.setStatus(OrderStatus.WAITING_PAYMENT);
+
+        User user = userService.authenticated();
+        order.setClient(user);
+
+        for (OrderItemDTO itemDto : dto.items()) {
+            Product product = productRepository.getReferenceById(itemDto.productId());
+            OrderItem item = new OrderItem(order, product, itemDto.quantity(), product.getPrice());
+            order.getItems().add(item);
+        }
+
+        repository.save(order);
+        orderItemRepository.saveAll(order.getItems());
+
         return new OrderDTO(order);
     }
 }
