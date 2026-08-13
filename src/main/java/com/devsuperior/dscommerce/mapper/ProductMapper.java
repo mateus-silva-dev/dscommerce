@@ -5,10 +5,7 @@ import com.devsuperior.dscommerce.dto.ProductMinDTO;
 import com.devsuperior.dscommerce.entities.Product;
 import org.mapstruct.*;
 
-@Mapper(componentModel = "spring",
-        uses = CategoryMapper.class,
-        nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS,
-        nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+@Mapper(componentModel = "spring", uses = CategoryMapper.class)
 public interface ProductMapper {
 
     ProductDTO toDTO(Product product);
