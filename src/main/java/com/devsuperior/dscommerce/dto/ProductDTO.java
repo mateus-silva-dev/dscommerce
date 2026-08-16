@@ -15,12 +15,14 @@ public record ProductDTO(
             @Size(min = 10, message = "A descrição precisa ter no minimo 10 caracteres")
             String description,
 
+            @NotNull(message = "Campo requerido")
             @Positive(message = "O preço deve ser positivo")
             Double price,
 
             @NotBlank(message = "Campo requerido")
             String imgUrl,
 
+            @NotNull(message = "Campo requerido")
             @NotEmpty(message = "Informe ao menos uma categoria")
             List<CategoryDTO> categories
 ) {
