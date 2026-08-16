@@ -2,6 +2,7 @@ package com.devsuperior.dscommerce.controllers.handlers;
 
 import com.devsuperior.dscommerce.dto.CustomError;
 import com.devsuperior.dscommerce.services.exceptions.DatabaseException;
+import com.devsuperior.dscommerce.services.exceptions.ForbiddenException;
 import com.devsuperior.dscommerce.services.exceptions.ResourceNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
@@ -38,6 +39,15 @@ public class ControllerExceptionHandler {
         return ResponseEntity
                 .unprocessableEntity()
                 .body(CustomError.validation("Dados inválidos", path, e.getBindingResult()));
+    }
+
+    @ExceptionHandler(ForbiddenException.class)
+    public ResponseEntity<CustomError> database(ForbiddenException e, HttpServletRequest request) {
+        HttpStatus status = HttpStatus.FORBIDDEN;
+        String path = HtmlUtils.htmlEscape(request.getRequestURI());
+        return ResponseEntity
+                .status(status)
+                .body(CustomError.of(status.value(), e.getMessage(), path));
     }
 
 }
